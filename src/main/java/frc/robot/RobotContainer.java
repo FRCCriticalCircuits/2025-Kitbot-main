@@ -24,13 +24,20 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {  
     return new SequentialCommandGroup(
-      new WaitCommand(5);
-        new ParallelDeadlineGroup(
-        new WaitCommand(5),
+      new WaitCommand(5),
+      new ParallelDeadlineGroup(
+        new WaitCommand(3.3),
         new driveForward(driveSubsystem, 0.8)
       ),
-      new driveForward(driveSubsystem, 0),
-      new shoot(shooterSubsystem,1)
+        new ParallelDeadlineGroup(
+        new WaitCommand(2),
+        new shoot(shooterSubsystem, 0.5),
+        new driveForward(driveSubsystem, 0)
+      ),
+      new ParallelDeadlineGroup(
+        new shoot(shooterSubsystem, 0),
+        new driveForward(driveSubsystem, 0)
+      )
     );
   }
 }
